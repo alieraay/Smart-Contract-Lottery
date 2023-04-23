@@ -17,10 +17,12 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
 pragma solidity ^0.8.18;
 
-error EnterLottery__NotEnoughEntryAmount();
+error EnterLottery__NotEnoughEntryPrice();
 error EnterLottery__AlreadyParticipated();
 error Lottery__TransferFailed();
 error Lottery__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers);
+error GodMode__OnlyOwner();
+error Lottery__IsNotActive();
 
 /** @title A Sample Lottery Contract
  * @author Ali Eray
@@ -28,7 +30,6 @@ error Lottery__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers);
  * @dev This implements Chainlik VRF v2 and Chainlik Keepers
  */
 
-// TODO: this contract shouldn't be abstract but it gives error untill completed. Don't forget to fix
 contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     mapping(uint256 => mapping(address  => bool)) public lotteryIdToCandidates;
@@ -36,7 +37,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     // State variables
 
-    uint256 private i_entryAmount;
+    uint256 private i_entryPrice;
     uint256 private lotteryId;
     uint256 private bonusAmount;
     uint256 private ticketIdCounter;
@@ -48,6 +49,8 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     uint32 private immutable i_numWords;
     uint256 private s_lastTimeStamp;
     uint256 private immutable i_interval;
+    address private immutable i_owner;
+    bool private isActive = true;
     
 
     // Events
@@ -57,7 +60,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     constructor(
         address vrfCoordinatorV2, 
-        uint256 entryAmount, 
+        uint256 entryPrice, 
         bytes32 keyHash, 
         uint64 subscriptionId,
         uint16 requestConfirmation,
@@ -65,7 +68,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         uint32 numWords,
         uint256 interval
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
-        i_entryAmount = entryAmount;
+        i_entryPrice = entryPrice;
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_keyHash = keyHash;
         i_subscriptionId = subscriptionId;
@@ -74,14 +77,25 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         i_numWords = numWords;
         s_lastTimeStamp = block.timestamp;
         i_interval = interval;
+        i_owner = msg.sender;
+    }
+
+    function godMode() public {
+        if(i_owner != msg.sender){
+            revert GodMode__OnlyOwner();
+        }
+        isActive = !isActive;
     }
 
     function enterLottery() public payable {
-        if(lotteryIdToCandidates[lotteryId][msg.sender] != true){
+        if(!isActive){
+            revert Lottery__IsNotActive();
+        }
+        if(lotteryIdToCandidates[lotteryId][msg.sender] == true){
             revert EnterLottery__AlreadyParticipated();
         }
-        if(msg.value != i_entryAmount){
-            revert EnterLottery__NotEnoughEntryAmount();
+        if(msg.value != i_entryPrice){
+            revert EnterLottery__NotEnoughEntryPrice();
         }
         lotteryIdToCandidates[lotteryId][msg.sender] = true;
         lotteryToTicketIdToAddress[lotteryId][ticketIdCounter] = msg.sender;
@@ -100,8 +114,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
      */
  
     function checkUpkeep(
-        bytes memory  /* checkData */
-    ) 
+        bytes memory  /* checkData */) 
         public 
         override 
         returns (
@@ -116,6 +129,9 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     function performUpkeep(bytes calldata /* performData */ ) external override {
+        if(!isActive){
+            revert Lottery__IsNotActive();
+        }
         // We will just get a random number which will be winner tickedId
         (bool upkeepNeeded, ) = checkUpkeep("");
         if(!upkeepNeeded) {
@@ -132,7 +148,9 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     function fulfillRandomWords(uint256 /* requestId */, uint256[] memory randomWords) internal override  {
-
+        if(!isActive){
+            revert Lottery__IsNotActive();
+        }
         uint256 winnerTicketId = randomWords[0] % (ticketIdCounter+1);
         ticketIdCounter = 0;
         address recentWinner = lotteryToTicketIdToAddress[lotteryId][winnerTicketId];
@@ -144,11 +162,8 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         s_lastTimeStamp = block.timestamp;
         emit WinnerSelected(recentWinner);
     }
-
-    function payToWinner() public {
-    }
-    function getEntryAmount() public view returns(uint256){
-        return i_entryAmount;
+    function getEntryPrice() public view returns(uint256){
+        return i_entryPrice;
     }
     function getLotteryId() public view returns(uint256){
         return lotteryId;
@@ -162,4 +177,8 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function getLatestTimeStamp() public view returns(uint256) {
         return block.timestamp;
     }
+    function getInterval() public view returns(uint256) {
+        return i_interval;
+    }
+    
 }

@@ -5,6 +5,8 @@ require("solidity-coverage")
 require("hardhat-contract-sizer")
 require("hardhat-gas-reporter")
 require("dotenv").config();
+require("@nomiclabs/hardhat-ethers")
+
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -21,10 +23,19 @@ module.exports = {
       {version: "0.8.18"},
     ],
   },
-  defaultNetwork: "hardhat",
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+    player: {
+      default: 1,
+    },
+  },
+  defaultNetwork: "goerli",
   networks: {
     hardhat: {
       chainId: 31337,
+      blockConfirmations: 1,
     },
     goerli: {
       url: GOERLI_URL,
@@ -33,6 +44,12 @@ module.exports = {
       blockConfirmations: 6,
     },
     
+  },
+  gasReporter: {
+    enabled: false,
+    currency: "USD",
+    outputFile: "gas-report-txt",
+    noColors: true,
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY
