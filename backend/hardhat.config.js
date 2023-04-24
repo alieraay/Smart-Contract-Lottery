@@ -31,7 +31,7 @@ module.exports = {
       default: 1,
     },
   },
-  defaultNetwork: "goerli",
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
       chainId: 31337,
@@ -53,5 +53,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY
+  },
+  mocha: {
+    timeout: 200000,
   }
 };
