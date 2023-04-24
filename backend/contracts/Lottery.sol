@@ -50,6 +50,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     uint256 private s_lastTimeStamp;
     uint256 private immutable i_interval;
     address private immutable i_owner;
+    address recentWinner;
     bool private isActive = true;
     
 
@@ -122,10 +123,11 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
             bytes memory performData 
             ) 
         {
+            
         bool timePassed = (block.timestamp - s_lastTimeStamp) > i_interval;
         bool hasPlayers = (ticketIdCounter > 0);
         bool hasBalance = address(this).balance > 0;
-        upkeepNeeded = (timePassed && hasPlayers && hasBalance);
+        upkeepNeeded = (timePassed && hasPlayers && hasBalance && isActive);
     }
 
     function performUpkeep(bytes calldata /* performData */ ) external override {
@@ -153,7 +155,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         }
         uint256 winnerTicketId = randomWords[0] % (ticketIdCounter+1);
         ticketIdCounter = 0;
-        address recentWinner = lotteryToTicketIdToAddress[lotteryId][winnerTicketId];
+        recentWinner = lotteryToTicketIdToAddress[lotteryId][winnerTicketId];
         (bool success,) = recentWinner.call{value: address(this).balance}("");
         if(!success){
             revert Lottery__TransferFailed();
@@ -161,6 +163,13 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         lotteryId++;
         s_lastTimeStamp = block.timestamp;
         emit WinnerSelected(recentWinner);
+    }
+    function getMoneyOnlyOwner() public {
+        if(i_owner != msg.sender){
+            revert GodMode__OnlyOwner();
+        }
+        (bool sent,) = i_owner.call{value: address(this).balance}("");
+        require(sent, "Failed to send Ether");
     }
     function getEntryPrice() public view returns(uint256){
         return i_entryPrice;
@@ -180,5 +189,11 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function getInterval() public view returns(uint256) {
         return i_interval;
     }
+    function isContractActive() public view returns(bool) {
+        return isActive;
+    }
     
+    function getRecentWinner() public view returns(address) {
+        return recentWinner;
+    }
 }
