@@ -26,6 +26,7 @@ module.exports = {
   namedAccounts: {
     deployer: {
       default: 0,
+      1:0,
     },
     player: {
       default: 1,
@@ -37,10 +38,14 @@ module.exports = {
       chainId: 31337,
       blockConfirmations: 1,
     },
+    localhost: {
+      chainId: 31337,
+  },
     goerli: {
       url: GOERLI_URL,
       chainId: 5,
       accounts : [PRIVATE_KEY],
+      saveDeployments: true,
       blockConfirmations: 6,
     },
     
@@ -51,8 +56,14 @@ module.exports = {
     outputFile: "gas-report-txt",
     noColors: true,
   },
+  contractSizer: {
+    runOnCompile: false,
+    only: ["Raffle"],
+},
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY
+    apiKey: {
+      goerli: ETHERSCAN_API_KEY,
+    },
   },
   mocha: {
     timeout: 200000,

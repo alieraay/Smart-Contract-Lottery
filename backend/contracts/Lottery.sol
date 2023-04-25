@@ -149,17 +149,18 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         emit IdRequest(requestId);
     }
 
-    function fulfillRandomWords(uint256 /* requestId */, uint256[] memory randomWords) internal override  {
+    function fulfillRandomWords(uint256 requestId , uint256[] memory randomWords) internal override  {
         if(!isActive){
             revert Lottery__IsNotActive();
         }
-        uint256 winnerTicketId = randomWords[0] % (ticketIdCounter+1);
-        ticketIdCounter = 0;
+        uint256 winnerTicketId = randomWords[0] % (ticketIdCounter);
+        
         recentWinner = lotteryToTicketIdToAddress[lotteryId][winnerTicketId];
         (bool success,) = recentWinner.call{value: address(this).balance}("");
         if(!success){
             revert Lottery__TransferFailed();
-        } 
+        }
+        ticketIdCounter = 0; 
         lotteryId++;
         s_lastTimeStamp = block.timestamp;
         emit WinnerSelected(recentWinner);
