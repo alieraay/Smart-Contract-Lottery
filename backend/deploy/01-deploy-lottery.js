@@ -4,7 +4,7 @@ const {network, ethers} = require("hardhat")
 const {verify} = require("../utils/verify")
 require("dotenv").config();
 
-const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("100")
+const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("1")
 
 module.exports = async ({getNamedAccounts, deployments}) => {
     const {deploy, log} = deployments
@@ -30,7 +30,7 @@ module.exports = async ({getNamedAccounts, deployments}) => {
     const entryPrice = networkConfig[chainId]["entryPrice"]
     const keyHash = networkConfig[chainId]["keyHash"]
     const requestConfirmation = networkConfig[chainId]["requestConfirmation"]
-    const callbackGasLimit = networkConfig[chainId]["requestConfirmation"]
+    const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"]
     const numWords = networkConfig[chainId]["numWords"]
     const interval = networkConfig[chainId]["interval"]
 
@@ -41,6 +41,7 @@ module.exports = async ({getNamedAccounts, deployments}) => {
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
+
     if(!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         await verify(lottery.address,args)
         log("-------------------------------------------------")
