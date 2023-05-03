@@ -15,6 +15,7 @@ require("@nomiclabs/hardhat-ethers")
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const COIN_MARKET_CAP_API_KEY = process.env.COIN_MARKET_CAP_API_KEY
+const GOERLI_URL = process.env.GOERLI_URL
 
 module.exports = {
   solidity: {
