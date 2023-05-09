@@ -1,22 +1,22 @@
 import Head from "next/head"
 import Image from "next/image"
 import styles from "../styles/Home.module.css"
-import Header from "../components/ManualHeader"
-import ManualHeader from "../components/ManualHeader"
+//import ManualHeader from "../components/ManualHeader"
+import Header from "@/components/Header"
+import LotteryEntrance from "@/components/LotteryEntrance"
 
 export default function Home() {
-    return(
+    return (
         <div className={styles.container}>
             <Head>
                 <title>Smart Contract Lottery</title>
-                <meta name="description" content="Our Lottery"/>
+                <meta name="description" content="Our Lottery" />
                 <link rel="icon" href="../app/favicon.ico" />
             </Head>
-            <ManualHeader/>
+            <Header />
+            <LotteryEntrance />
             Hi!
         </div>
     )
 }
-export {
-    Header
-}
+export { Header }
