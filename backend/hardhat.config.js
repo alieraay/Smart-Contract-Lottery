@@ -15,6 +15,7 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const COIN_MARKET_CAP_API_KEY = process.env.COIN_MARKET_CAP_API_KEY
 const GOERLI_URL = process.env.GOERLI_URL
+const PRIVATE_KEY_ACCOUNT_2 = process.env.PRIVATE_KEY_ACCOUNT_2
 
 module.exports = {
     solidity: {
@@ -37,8 +38,12 @@ module.exports = {
             accounts: [
                 {
                     privateKey: PRIVATE_KEY,
-                    balance: "10000000000000000000000",
+                    balance: "100000000000000000000000",
                 },
+                {
+                    privateKey: PRIVATE_KEY_ACCOUNT_2,
+                    balance: "100000000000000000000000",
+                }
             ],
         },
         localhost: {
