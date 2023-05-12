@@ -39,7 +39,6 @@ function LotteryEntrance() {
         }
     }
 
-
     useEffect(() => {
         if (isWeb3Enabled) {
             getEntryPriceFromContract()
@@ -51,7 +50,13 @@ function LotteryEntrance() {
             Hi from lottery Entrance
             {lotteryAddress ? (
                 <div>
-                    <button onClick={async function (){enterLottery()}}>Enter Lottery</button>
+                    <button
+                        onClick={async function () {
+                            enterLottery()
+                        }}
+                    >
+                        Enter Lottery
+                    </button>
                     Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
                 </div>
             ) : (
