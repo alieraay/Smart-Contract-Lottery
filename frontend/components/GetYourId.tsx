@@ -22,11 +22,13 @@ function GetYourId() {
     })
 
     async function getYourIdFromContract() {
-        const yourId = await getYourId()
-        if (yourId != undefined) {
-            const yourIdFromContract = (await getYourId() as BigNumber).toString()
-            setYourId(yourIdFromContract)
-            console.log(yourIdFromContract, "2")
+        const id = await getYourId()
+
+        if (id !== undefined) {
+            const yourIdFromCall = ((await getYourId()) as BigNumber).toString()
+            setYourId(yourIdFromCall)
+        } else{
+            setYourId("undefined")
         }
     }
     useEffect(() => {
@@ -36,9 +38,11 @@ function GetYourId() {
     }, [isWeb3Enabled])
     return (
         <div>
-            
-            <button>Get Your Id</button>
-            Your Ticket Number is {yourId}
+            { yourId!="undefined" ? 
+            <div> Your ticket id is {yourId}</div> 
+            : <div> You have not entered the lotteryhh</div> 
+                
+            }
         </div>
     )
 }
