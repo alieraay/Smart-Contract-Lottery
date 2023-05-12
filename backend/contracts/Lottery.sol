@@ -22,6 +22,7 @@ error Lottery__TransferFailed();
 error Lottery__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers);
 error GodMode__OnlyOwner();
 error Lottery__IsNotActive();
+error GetYourId__IdIsNotValid();
 
 /** @title A Sample Lottery Contract
  * @author Ali Eray
@@ -33,6 +34,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     mapping(uint256 => mapping(address => bool)) public lotteryIdToCandidates;
     mapping(uint256 => mapping(uint256 => address)) public lotteryToTicketIdToAddress;
     mapping(address => mapping(uint => uint)) addressTolotteryIdToTicketId;
+    mapping(address => mapping(uint => bool)) isAddressInLottery;
 
     // State variables
 
@@ -99,6 +101,8 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         lotteryIdToCandidates[lotteryId][msg.sender] = true;
         lotteryToTicketIdToAddress[lotteryId][ticketIdCounter] = msg.sender;
         addressTolotteryIdToTicketId[msg.sender][lotteryId] = ticketIdCounter;
+        isAddressInLottery[msg.sender][lotteryId] = true;
+
         bonusAmount += msg.value;
         ticketIdCounter++;
         emit LotteryEnter(msg.sender);
@@ -199,6 +203,9 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     function getYourId() public view returns (uint) {
+        if(!isAddressInLottery[msg.sender][lotteryId]){
+            revert GetYourId__IdIsNotValid();
+        }
         return addressTolotteryIdToTicketId[msg.sender][lotteryId];
     }
 }
