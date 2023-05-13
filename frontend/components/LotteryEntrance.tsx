@@ -54,16 +54,24 @@ function LotteryEntrance() {
         handleNewNotification()
         getEntryPriceFromContract()
     }
+    type ErrorMessages = {
+        [key:string]:string | (()=>string)
+    }
+    const errorMessages: ErrorMessages = {
+        "EnterLottery__NotEnoughEntryPrice": () => `You have to send ${ethers.utils.formatUnits(entryPrice)} ETH`,
+        "EnterLottery__AlreadyParticipated": "You already participated the lottery",
+        "Lottery__TransferFailed": "There is a significant problem that causes preventing the transfer of the reward",
+        "GodMode__OnlyOwner": "Only owner can act like a god",
+        "Lottery__IsNotActive": "The lottery is not activated. Please contact the owner",
+        "GetYourId__IdIsNotValid": "You have not participated in the lottery",
+    };
     const handleError = async function (error: any) {
         console.log("handling error", error)
-        let message = ""
-        if(error.message.includes("EnterLottery__NotEnoughEntryPrice")){
-            message = `You have to send ${ethers.utils.formatUnits(entryPrice)} ETH`
-        } else if(error.message.includes("EnterLottery__AlreadyParticipated")){
-            message = "You already participated the lottery"
-        } else if(error.message.includes(""))
-        handleNewErrorNotification(message);
-    
+        let message = errorMessages[error.message];
+        if (typeof message === "function") {
+            message = message();
+        }
+        handleNewErrorNotification(message || error.message);
     }
 
     const handleNewNotification = function () {
