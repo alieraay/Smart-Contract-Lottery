@@ -2,7 +2,9 @@ import { useWeb3Contract } from "react-moralis"
 import { abi, contractAddresses } from "../constants"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
-import { BigNumber, ethers } from "ethers"
+import { BigNumber, ethers, ContractTransaction } from "ethers"
+import { error } from "console"
+import { useNotification } from "web3uikit"
 
 interface contractAddressesInterface {
     [key: string]: string[]
@@ -14,6 +16,8 @@ function LotteryEntrance() {
     const chainId: string = parseInt(chainIdHex!).toString()
     const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
     const [entryPrice, setEntryPrice] = useState("0")
+
+    const dispatch = useNotification()
 
     const { runContractFunction: enterLottery } = useWeb3Contract({
         abi: abi,
@@ -45,6 +49,42 @@ function LotteryEntrance() {
         }
     }, [isWeb3Enabled])
 
+    const handleSuccess = async function (tx: ContractTransaction) {
+        await tx.wait(1)
+        handleNewNotification()
+        getEntryPriceFromContract()
+    }
+    const handleError = async function (error: any) {
+        console.log("handling error", error)
+        let message = ""
+        if(error.message.includes("EnterLottery__NotEnoughEntryPrice")){
+            message = `You have to send ${ethers.utils.formatUnits(entryPrice)} ETH`
+        } else if(error.message.includes("EnterLottery__AlreadyParticipated")){
+            message = "You already participated the lottery"
+        } else if(error.message.includes(""))
+        handleNewErrorNotification(message);
+    
+    }
+
+    const handleNewNotification = function () {
+        dispatch({
+            type: "info",
+            message: "Transaction Complete!",
+            title: "Tx Notification",
+            position: "topR",
+            
+        })
+    }
+
+    const handleNewErrorNotification = function (message: string) {
+        dispatch({
+            type: "error",
+            title: "Transaction Reverted",
+            message: message,
+            position: "topR",
+        })
+    }
+
     return (
         <div>
             Hi from lottery Entrance
@@ -52,7 +92,10 @@ function LotteryEntrance() {
                 <div>
                     <button
                         onClick={async function () {
-                            enterLottery()
+                            await enterLottery({
+                                onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
+                                onError: (error: any) => handleError(error),
+                            })
                         }}
                     >
                         Enter Lottery
