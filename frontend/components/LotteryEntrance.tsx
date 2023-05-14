@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { BigNumber, ethers, ContractTransaction } from "ethers"
 import { error } from "console"
 import { useNotification } from "web3uikit"
+import { handleErrorMessage } from "../utils/errorUtils"
 
 interface contractAddressesInterface {
     [key: string]: string[]
@@ -54,25 +55,6 @@ function LotteryEntrance() {
         handleNewNotification()
         getEntryPriceFromContract()
     }
-    type ErrorMessages = {
-        [key:string]:string | (()=>string)
-    }
-    const errorMessages: ErrorMessages = {
-        "EnterLottery__NotEnoughEntryPrice": () => `You have to send ${ethers.utils.formatUnits(entryPrice)} ETH`,
-        "EnterLottery__AlreadyParticipated": "You already participated the lottery",
-        "Lottery__TransferFailed": "There is a significant problem that causes preventing the transfer of the reward",
-        "GodMode__OnlyOwner": "Only owner can act like a god",
-        "Lottery__IsNotActive": "The lottery is not activated. Please contact the owner",
-        "GetYourId__IdIsNotValid": "You have not participated in the lottery",
-    };
-    const handleError = async function (error: any) {
-        console.log("handling error", error)
-        let message = errorMessages[error.message];
-        if (typeof message === "function") {
-            message = message();
-        }
-        handleNewErrorNotification(message || error.message);
-    }
 
     const handleNewNotification = function () {
         dispatch({
@@ -80,8 +62,13 @@ function LotteryEntrance() {
             message: "Transaction Complete!",
             title: "Tx Notification",
             position: "topR",
-            
         })
+    }
+
+    const handleError = async function (error: any) {
+        console.log("handling error", error)
+        const message = handleErrorMessage(error, entryPrice)
+        handleNewErrorNotification(message)
     }
 
     const handleNewErrorNotification = function (message: string) {

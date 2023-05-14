@@ -10,16 +10,18 @@ import { NotificationProvider } from "web3uikit"
 export default function Home() {
     return (
         <div className={styles.container}>
-            <Head>
-                <title>Smart Contract Lottery</title>
-                <meta name="description" content="Our Lottery" />
-                <link rel="icon" href="../app/favicon.ico" />
-            </Head>
-            <Header />
             <NotificationProvider>
+                <Head>
+                    <title>Smart Contract Lottery</title>
+                    <meta name="description" content="Our Lottery" />
+                    <link rel="icon" href="../app/favicon.ico" />
+                </Head>
+                <Header />
+
                 <LotteryEntrance />
+
+                <GetYourId />
             </NotificationProvider>
-            <GetYourId />
             Hi!
         </div>
     )
