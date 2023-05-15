@@ -34,6 +34,7 @@ function LotteryEntrance() {
         functionName: "getEntryPrice",
         params: {},
     })
+
     async function getEntryPriceFromContract() {
         const price = await getEntryPrice()
         if (price !== undefined) {
@@ -97,6 +98,7 @@ function LotteryEntrance() {
                     </button>
                     Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
                 </div>
+
             ) : (
                 <div>Lottery Address couldn't detected</div>
             )}
