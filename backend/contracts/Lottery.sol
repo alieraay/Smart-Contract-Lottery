@@ -98,13 +98,14 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (msg.value != i_entryPrice) {
             revert EnterLottery__NotEnoughEntryPrice();
         }
+        ticketIdCounter++;
+
         lotteryIdToCandidates[lotteryId][msg.sender] = true;
         lotteryToTicketIdToAddress[lotteryId][ticketIdCounter] = msg.sender;
         addressTolotteryIdToTicketId[msg.sender][lotteryId] = ticketIdCounter;
         isAddressInLottery[msg.sender][lotteryId] = true;
 
         bonusAmount += msg.value;
-        ticketIdCounter++;
         emit LotteryEnter(msg.sender);
     }
 
@@ -120,7 +121,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function checkUpkeep(
         bytes memory /* checkData */
     ) public override returns (bool upkeepNeeded, bytes memory performData) {
-        bool timePassed = (block.timestamp - s_lastTimeStamp) > i_interval;
+        bool timePassed =(block.timestamp - s_lastTimeStamp) > i_interval;
         bool hasPlayers = (ticketIdCounter > 0);
         bool hasBalance = address(this).balance > 0;
         upkeepNeeded = (timePassed && hasPlayers && hasBalance && isActive);
@@ -149,7 +150,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (!isActive) {
             revert Lottery__IsNotActive();
         }
-        uint256 winnerTicketId = randomWords[0] % (ticketIdCounter);
+        uint256 winnerTicketId = (randomWords[0] % (ticketIdCounter))+1;
 
         recentWinner = lotteryToTicketIdToAddress[lotteryId][winnerTicketId];
         (bool success, ) = recentWinner.call{value: address(this).balance}("");
@@ -203,7 +204,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     function getYourId() public view returns (uint) {
-        if(!isAddressInLottery[msg.sender][lotteryId]){
+        if (!isAddressInLottery[msg.sender][lotteryId]) {
             revert GetYourId__IdIsNotValid();
         }
         return addressTolotteryIdToTicketId[msg.sender][lotteryId];
