@@ -6,16 +6,15 @@ import { BigNumber, ethers, ContractTransaction } from "ethers"
 import { error } from "console"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
+import { useContractAddress } from "@/hooks/useContractAddress"
 
 interface contractAddressesInterface {
     [key: string]: string[]
 }
 
 function LotteryEntrance() {
-    const addresses: contractAddressesInterface = contractAddresses
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
-    const chainId: string = parseInt(chainIdHex!).toString()
-    const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
+    const {isWeb3Enabled} = useMoralis()
+    const lotteryAddress = useContractAddress()
     const [entryPrice, setEntryPrice] = useState("0")
 
     const dispatch = useNotification()

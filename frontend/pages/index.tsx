@@ -10,6 +10,8 @@ import { NotificationProvider } from "web3uikit"
 import GetPlayer from "@/components/GetPlayer"
 import GetNumberOfPlayer from "@/components/GetNumberOfPlayer"
 import GetRecentWinner from "@/components/GetRecentWinner"
+import GetInterval from "@/components/GetInterval"
+// import Countdown from "@/components/Countdown"
 
 export default function Home() {
     return (
@@ -21,15 +23,15 @@ export default function Home() {
                     <link rel="icon" href="../app/favicon.ico" />
                 </Head>
                 <Header />
-
+                <GetInterval/>
                 <LotteryEntrance />
                 <GetLotteryId />
                 <GetPlayer />
                 <GetNumberOfPlayer />
                 <GetRecentWinner />
 
-
                 <GetYourId />
+                
             </NotificationProvider>
             Hi!
         </div>

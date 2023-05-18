@@ -3,16 +3,15 @@ import { abi, contractAddresses } from "../constants"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
 import { BigNumber, ethers, ContractTransaction } from "ethers"
+import { useContractAddress } from "@/hooks/useContractAddress"
 
 interface contractAddressesInterface {
     [key: string]: string[]
 }
 
 function GetLotteryId() {
-    const addresses: contractAddressesInterface = contractAddresses
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
-    const chainId: string = parseInt(chainIdHex!).toString()
-    const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
+    const{isWeb3Enabled} = useMoralis()
+    const lotteryAddress = useContractAddress()
     const [lotteryId, setLotteryId] = useState("0")
 
     const { runContractFunction: getLotteryId } = useWeb3Contract({
@@ -23,20 +22,29 @@ function GetLotteryId() {
     })
 
     async function getLotteryIdFromContract() {
-        const id = await getLotteryId()
-
-        const lotteryIdFromCall = ((await getLotteryId()) as Number).toString()
+        const lotteryIdFromCall = ((await getLotteryId()) as BigNumber).toString()
+        console.log("getLotteryFromContract: ", lotteryIdFromCall)
         setLotteryId(lotteryIdFromCall)
+
     }
 
-    const handleSuccess = async function (tx: ContractTransaction) {
-        await tx.wait(1)
-        getLotteryIdFromContract()
-    }
+    const checkEvents = async function() {
+        const provider =  new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
+        let a = new ethers.Contract(lotteryAddress!, abi as any, provider);
+        a.on("WinnerSelected",async()=>{
 
+            getLotteryIdFromContract()
+
+
+            console.log("WinnerSelected next lotteryID")
+            console.log(lotteryId)
+
+        })
+    }
     useEffect(() => {
         if (isWeb3Enabled) {
             getLotteryIdFromContract()
+            checkEvents()
         }
     }, [isWeb3Enabled])
 

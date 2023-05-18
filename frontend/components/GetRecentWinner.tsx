@@ -1,17 +1,16 @@
 import { abi, contractAddresses } from "@/constants"
-import { useMoralis, useWeb3Contract } from "react-moralis"
-import { BigNumber, ethers, ContractTransaction } from "ethers"
+import { MoralisProvider, useMoralis, useWeb3Contract } from "react-moralis"
+import { BigNumber, ethers, ContractTransaction, Contract } from "ethers"
 import { useEffect, useState } from "react"
+import { useContractAddress } from "@/hooks/useContractAddress"
 
 interface contractAddressesInterface {
     [key: string]: string[]
 }
 
 function GetRecentWinner() {
-    const addresses: contractAddressesInterface = contractAddresses
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
-    const chainId: string = parseInt(chainIdHex!).toString()
-    const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
+    const { isWeb3Enabled, web3 } = useMoralis()
+    const lotteryAddress = useContractAddress()
     const [recentWinner, setRecentWinner] = useState("0")
 
     const { runContractFunction: getRecentWinner } = useWeb3Contract({
@@ -31,17 +30,24 @@ function GetRecentWinner() {
         }
     }
 
+    const checkEvents = async function () {
+        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
+        let a = new ethers.Contract(lotteryAddress!, abi as any, provider)
+        a.on("WinnerSelected", async() => {
+            getRecentWinnerFromContract()
+            console.log("WinnerSelected event emited")
+            console.log(recentWinner)
+        })
+    }
+
     useEffect(() => {
         if (isWeb3Enabled) {
             getRecentWinnerFromContract()
+            checkEvents()
         }
     }, [isWeb3Enabled])
 
-    return (
-        <div>
-            Recent Winner {recentWinner}
-        </div>
-    )
+    return <div>Recent Winner {recentWinner}</div>
 }
 
 export default GetRecentWinner
