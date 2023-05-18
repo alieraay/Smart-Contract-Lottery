@@ -23,8 +23,9 @@ function GetRecentWinner() {
         const winner = await getRecentWinner()
 
         if (winner !== null) {
-            const winnerFromCall = (winner as BigNumber).toString()
+            const winnerFromCall = winner as string
             setRecentWinner(winnerFromCall)
+            console.log("GetWinner: ", recentWinner)
         } else {
             console.log("The winner has not been selected yet")
         }
@@ -33,10 +34,8 @@ function GetRecentWinner() {
     const checkEvents = async function () {
         const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
         let a = new ethers.Contract(lotteryAddress!, abi as any, provider)
-        a.on("WinnerSelected", async() => {
+        a.on("WinnerSelected", (recentWinner) => {
             getRecentWinnerFromContract()
-            console.log("WinnerSelected event emited")
-            console.log(recentWinner)
         })
     }
 

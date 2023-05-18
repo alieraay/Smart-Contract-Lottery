@@ -10,7 +10,7 @@ interface contractAddressesInterface {
 }
 
 function GetLotteryId() {
-    const{isWeb3Enabled} = useMoralis()
+    const { isWeb3Enabled } = useMoralis()
     const lotteryAddress = useContractAddress()
     const [lotteryId, setLotteryId] = useState("0")
 
@@ -23,22 +23,16 @@ function GetLotteryId() {
 
     async function getLotteryIdFromContract() {
         const lotteryIdFromCall = ((await getLotteryId()) as BigNumber).toString()
-        console.log("getLotteryFromContract: ", lotteryIdFromCall)
         setLotteryId(lotteryIdFromCall)
-
+        console.log("getLotteryFromContract: ", lotteryId)
     }
 
-    const checkEvents = async function() {
-        const provider =  new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
-        let a = new ethers.Contract(lotteryAddress!, abi as any, provider);
-        a.on("WinnerSelected",async()=>{
-
+    const checkEvents = async function () {
+        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
+        let a = new ethers.Contract(lotteryAddress!, abi as any, provider)
+        a.on("WinnerSelected", async () => {
+            console.log("event emitted")
             getLotteryIdFromContract()
-
-
-            console.log("WinnerSelected next lotteryID")
-            console.log(lotteryId)
-
         })
     }
     useEffect(() => {
