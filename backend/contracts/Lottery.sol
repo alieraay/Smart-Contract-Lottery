@@ -55,9 +55,9 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     bool private isActive = true;
 
     // Events
-    event LotteryEnter(address indexed candidate);
+    event LotteryEnter(address indexed candidate, uint256 indexed ticketIdCounter);
     event IdRequest(uint256 indexed requestId);
-    event WinnerSelected(address indexed winner);
+    event WinnerSelected(address indexed winner, uint256 indexed lotteryId, uint256 indexed ticketId);
 
     constructor(
         address vrfCoordinatorV2,
@@ -106,7 +106,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         isAddressInLottery[msg.sender][lotteryId] = true;
 
         bonusAmount += msg.value;
-        emit LotteryEnter(msg.sender);
+        emit LotteryEnter(msg.sender,ticketIdCounter);
     }
 
     /**
@@ -160,7 +160,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         ticketIdCounter = 0;
         lotteryId++;
         s_lastTimeStamp = block.timestamp;
-        emit WinnerSelected(recentWinner);
+        emit WinnerSelected(recentWinner,lotteryId,ticketIdCounter);
     }
 
     function getMoneyOnlyOwner() public {
