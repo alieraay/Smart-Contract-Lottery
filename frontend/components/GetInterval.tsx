@@ -21,14 +21,16 @@ function GetInterval() {
     })
 
     async function getIntervalFromContract() {
-        const intervalFromCall = (await getInterval() as BigNumber).toString()
+        const result = await getInterval()
+        const intervalFromCall = (result as BigNumber).toString()
         setInterval(intervalFromCall)
+        console.log(intervalFromCall)
     }
 
     useEffect(() =>{
-        if(isWeb3Enabled){
+        if(!isWeb3Enabled) return
             getIntervalFromContract()
-        }
+
     },[isWeb3Enabled])
 
     return(

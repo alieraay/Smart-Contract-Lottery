@@ -90,6 +90,7 @@ function LotteryEntrance() {
                             await enterLottery({
                                 onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
                                 onError: (error: any) => handleError(error),
+                                
                             })
                         }}
                     >

@@ -3,16 +3,16 @@ import { abi, contractAddresses } from "../constants"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
 import { BigNumber, ethers, ContractTransaction } from "ethers"
+import { useContractAddress } from "@/hooks/useContractAddress"
 
 interface contractAddressesInterface {
     [key: string]: string[]
 }
 
 function GetNumberOfPlayer() {
-    const addresses: contractAddressesInterface = contractAddresses
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
-    const chainId: string = parseInt(chainIdHex!).toString()
-    const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
+    const { isWeb3Enabled } = useMoralis()
+
+    const lotteryAddress = useContractAddress()
     const [numPlayer, setGetNumberOfPlayer] = useState("0")
 
     const { runContractFunction: getNumberOfPlayer } = useWeb3Contract({
@@ -29,8 +29,33 @@ function GetNumberOfPlayer() {
     }
 
     useEffect(() => {
-        if (isWeb3Enabled) {
-            getNumPlayerFromContract()
+        if (!isWeb3Enabled && !lotteryAddress) return
+        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
+        let contract = new ethers.Contract(lotteryAddress!, abi as any, provider)
+
+        const listenWinner = (winner: string, lotteryId: BigNumber, ticketId: BigNumber) => {
+            console.log(ticketId.toString())
+            setGetNumberOfPlayer(ticketId.toString())
+        }
+        contract.on("LotteryEnter", listenWinner)
+        return () => {
+            contract.off("LotteryEnter", listenWinner)
+        }
+    }, [isWeb3Enabled])
+
+    useEffect(() => {
+        if (!isWeb3Enabled && !lotteryAddress) return
+        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545/")
+        let contract = new ethers.Contract(lotteryAddress!, abi as any, provider)
+
+        const listenEntrance = (candidate: string, ticketIdCounter: BigNumber) => {
+            console.log("Entered", ticketIdCounter.toString())
+            setGetNumberOfPlayer(ticketIdCounter.toString())
+        }
+
+        contract.on("LotteryEnter", listenEntrance)
+        return () => {
+            contract.off("LotteryEnter", listenEntrance)
         }
     }, [isWeb3Enabled])
 
@@ -43,9 +68,7 @@ function GetNumberOfPlayer() {
         <div>
             NUMBER OF PLAYERS
             {lotteryAddress ? (
-                <div>
-                  {numPlayer}
-                </div>
+                <div>{numPlayer}</div>
             ) : (
                 <div>Lottery Address couldn't detected</div>
             )}
