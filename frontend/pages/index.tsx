@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css"
 import Header from "@/components/Header"
 import LotteryEntrance from "@/components/LotteryEntrance"
 import GetYourId from "@/components/GetYourId"
+import GetLotteryId from "@/components/GetLotteryId"
 import { NotificationProvider } from "web3uikit"
 import GetPlayer from "@/components/GetPlayer"
 import GetNumberOfPlayer from "@/components/GetNumberOfPlayer"
@@ -27,6 +28,7 @@ export default function Home() {
                     <Header />
                     <GetInterval />
                     <LotteryEntrance />
+                    <GetLotteryId/>
                     <GetPlayer />
                     <GetNumberOfPlayer />
                     <GetRecentWinner />

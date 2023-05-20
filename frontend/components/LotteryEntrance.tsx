@@ -13,7 +13,7 @@ interface contractAddressesInterface {
 }
 
 function LotteryEntrance() {
-    const {isWeb3Enabled} = useMoralis()
+    const { isWeb3Enabled } = useMoralis()
     const lotteryAddress = useContractAddress()
     const [entryPrice, setEntryPrice] = useState("0")
 
@@ -90,7 +90,6 @@ function LotteryEntrance() {
                             await enterLottery({
                                 onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
                                 onError: (error: any) => handleError(error),
-                                
                             })
                         }}
                     >
@@ -98,7 +97,6 @@ function LotteryEntrance() {
                     </button>
                     Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
                 </div>
-
             ) : (
                 <div>Lottery Address couldn't detected</div>
             )}
