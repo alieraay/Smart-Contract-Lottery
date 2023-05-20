@@ -1,10 +1,10 @@
 // components/GetRecentWinner.js
-import {useLotteryState} from '@/hooks/useLotteryState'
+import { useLotteryState } from "@/hooks/useLotteryState"
 
 function GetRecentWinner() {
-  const { lotteryId, recentWinner } = useLotteryState()
+    const { recentWinner } = useLotteryState()
 
-  return <div>Recent Winner: {recentWinner} Active Lottery ID: {lotteryId}</div>
+    return <div>Recent Winner: {recentWinner} </div>
 }
 
 export default GetRecentWinner
