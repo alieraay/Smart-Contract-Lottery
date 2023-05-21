@@ -7,6 +7,7 @@ import { error } from "console"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
 import { useContractAddress } from "@/hooks/useContractAddress"
+import { useLotteryState } from "@/hooks/useLotteryState"
 
 interface contractAddressesInterface {
     [key: string]: string[]
@@ -16,6 +17,7 @@ function LotteryEntrance() {
     const { isWeb3Enabled } = useMoralis()
     const lotteryAddress = useContractAddress()
     const [entryPrice, setEntryPrice] = useState("0")
+    const { numPlayer } = useLotteryState()
 
     const dispatch = useNotification()
 
@@ -81,25 +83,31 @@ function LotteryEntrance() {
     }
 
     return (
-        <div>
-            Hi from lottery Entrance
-            {lotteryAddress ? (
-                <div>
-                    <button
-                        onClick={async function () {
-                            await enterLottery({
-                                onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
-                                onError: (error: any) => handleError(error),
-                            })
-                        }}
-                    >
-                        Enter Lottery
-                    </button>
-                    Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
-                </div>
-            ) : (
-                <div>Lottery Address couldn't detected</div>
-            )}
+        <div className="  text-white flex flex-col items-center text-[40px] mt-[50px]">
+            
+            LOTTERY POOL
+            <div className=" text-white flex flex-col items-center text-[70px] mt-[0px] ">
+                {Number(ethers.utils.formatUnits(entryPrice)) * Number(numPlayer)} ETH !!
+                {lotteryAddress ? (
+                    <div className="flex flex-col items-center text-[20px]">
+                        <button
+                            className="bg-[#EB5074] mx-auto my-auto flex items-center justify-center w-[400px] h-[150px] text-[60px] rounded-3xl
+                transition duration-200 ease-in-out transform hover:scale-105 active:scale-95 mt-2 mb-2"
+                            onClick={async function () {
+                                await enterLottery({
+                                    onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
+                                    onError: (error: any) => handleError(error),
+                                })
+                            }}
+                        >
+                            Enter Lottery
+                        </button>
+                        Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
+                    </div>
+                ) : (
+                    <div className="text-white">Lottery Address couldn't detected</div>
+                )}
+            </div>
         </div>
     )
 }

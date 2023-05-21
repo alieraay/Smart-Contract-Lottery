@@ -11,30 +11,40 @@ import GetPlayer from "@/components/GetPlayer"
 import GetNumberOfPlayer from "@/components/GetNumberOfPlayer"
 import GetRecentWinner from "@/components/GetRecentWinner"
 import GetInterval from "@/components/GetInterval"
-
+import FaucetButton from "@/components/FaucetButton"
+import GodModeButton from "@/components/GodModeButton"
+import DrawButton from "@/components/DrawButton"
 // import Countdown from "@/components/Countdown"
-
 
 export default function Home() {
     return (
-        <div className={styles.container}>
-
-                <NotificationProvider>
-                    <Head>
-                        <title>Smart Contract Lottery</title>
-                        <meta name="description" content="Our Lottery" />
-                        <link rel="icon" href="../app/favicon.ico" />
-                    </Head>
-                    <Header />
+        <div className="bg-[#150D25]">
+            <NotificationProvider>
+                <Head>
+                    <title>Smart Contract Lottery</title>
+                    <meta name="description" content="Our Lottery" />
+                    <link rel="icon" href="../app/favicon.ico" />
+                </Head>
+                <Header />
+                <div className="flex justify-between">
+                    <GodModeButton />
                     <GetInterval />
+                </div>
+                <GetLotteryId />
+                <GetNumberOfPlayer />
+                <div className="flex justify-center items-center">
                     <LotteryEntrance />
-                    <GetLotteryId/>
-                    <GetPlayer />
-                    <GetNumberOfPlayer />
+                </div>
+                <div>
+                <GetYourId />
+                <DrawButton></DrawButton>
+                </div>
+                
+                <div className="flex justify-between">
                     <GetRecentWinner />
-                    <GetYourId />
-                </NotificationProvider>
-            Hi!
+                    <FaucetButton />
+                </div>
+            </NotificationProvider>
         </div>
     )
 }

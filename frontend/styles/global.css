@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-shape {
+      @apply rounded-3xl
+      transition duration-200 ease-in-out transform hover:scale-105 active:scale-95 ;
+    }
+  }

@@ -74,7 +74,7 @@ function GetPlayer() {
     }
 
     return (
-        <div>
+        <div className="text-white">
             <form onSubmit={handleSubmit}>
                 <ul>
                     <label>
@@ -90,7 +90,7 @@ function GetPlayer() {
                     </label>
                 </ul>
 
-                <input type="submit" value="Submit" />
+                <input className="button" type="submit" value="Submit" />
             </form>
 
             {playerAddress && (

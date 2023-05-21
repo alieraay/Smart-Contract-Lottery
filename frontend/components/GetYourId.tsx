@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { BigNumber, ethers } from "ethers"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
+import "../styles/Home.module.css"
 
 interface contractAddressesInterface {
     [key: string]: string[]
@@ -66,16 +67,17 @@ function GetYourId() {
         handleNewErrorNotification(message)
     }
     return (
-        <div>
+        <div className="text-white text-center">
+            
             {lotteryAddress ? (
                 <>
-                    <button onClick={handleButtonClick}>Get Your Ticket Id</button>
+                    <button className="btn-shape bg-[#7738F5] p-4 mt-2 "  onClick={handleButtonClick}>Get Your Ticket Id</button>
 
                     {buttonClicked ? (
                         yourId != "undefined" ? (
                             <div> Your ticket id is {yourId}</div>
                         ) : null
-                    ) : null}
+                    ) : <div> ...</div> }
                 </>
             ) : null}
         </div>

@@ -4,7 +4,7 @@ import { useLotteryState } from "@/hooks/useLotteryState"
 function GetRecentWinner() {
     const { recentWinner } = useLotteryState()
 
-    return <div>Recent Winner: {recentWinner} </div>
+    return <div className="text-white text-[20px] ml-5">Recent Winner: {recentWinner} </div>
 }
 
 export default GetRecentWinner
