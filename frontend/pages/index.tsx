@@ -35,12 +35,12 @@ export default function Home() {
                 <div className="flex justify-center items-center">
                     <LotteryEntrance />
                 </div>
-                <div>
+
                 <GetYourId />
+
                 <DrawButton></DrawButton>
-                </div>
-                
-                <div className="flex justify-between">
+
+                <div className="flex justify-between ">
                     <GetRecentWinner />
                     <FaucetButton />
                 </div>
