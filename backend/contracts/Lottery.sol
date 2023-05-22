@@ -57,7 +57,11 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     // Events
     event LotteryEnter(address indexed candidate, uint256 indexed ticketIdCounter);
     event IdRequest(uint256 indexed requestId);
-    event WinnerSelected(address indexed winner, uint256 indexed lotteryId, uint256 indexed ticketId);
+    event WinnerSelected(
+        address indexed winner,
+        uint256 indexed lotteryId,
+        uint256 indexed ticketId
+    );
 
     constructor(
         address vrfCoordinatorV2,
@@ -106,7 +110,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         isAddressInLottery[msg.sender][lotteryId] = true;
 
         bonusAmount += msg.value;
-        emit LotteryEnter(msg.sender,ticketIdCounter);
+        emit LotteryEnter(msg.sender, ticketIdCounter);
     }
 
     /**
@@ -121,7 +125,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function checkUpkeep(
         bytes memory /* checkData */
     ) public override returns (bool upkeepNeeded, bytes memory performData) {
-        bool timePassed =(block.timestamp - s_lastTimeStamp) > i_interval;
+        bool timePassed = (block.timestamp - s_lastTimeStamp) > i_interval;
         bool hasPlayers = (ticketIdCounter > 0);
         bool hasBalance = address(this).balance > 0;
         upkeepNeeded = (timePassed && hasPlayers && hasBalance && isActive);
@@ -150,7 +154,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (!isActive) {
             revert Lottery__IsNotActive();
         }
-        uint256 winnerTicketId = (randomWords[0] % (ticketIdCounter))+1;
+        uint256 winnerTicketId = (randomWords[0] % (ticketIdCounter)) + 1;
 
         recentWinner = lotteryToTicketIdToAddress[lotteryId][winnerTicketId];
         (bool success, ) = recentWinner.call{value: address(this).balance}("");
@@ -160,7 +164,24 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         ticketIdCounter = 0;
         lotteryId++;
         s_lastTimeStamp = block.timestamp;
-        emit WinnerSelected(recentWinner,lotteryId,ticketIdCounter);
+        emit WinnerSelected(recentWinner, lotteryId, ticketIdCounter);
+    }
+
+    function drawLottery() public {
+        if (!isActive) {
+            revert Lottery__IsNotActive();
+        }
+        uint256[] memory randomWords = getRandomWordsMock();
+
+        fulfillRandomWords(0, randomWords);
+    }
+
+    function getRandomWordsMock() internal returns (uint256[] memory) {
+        uint256[] memory randomWords = new uint256[](1);
+        randomWords[0] =
+            uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) %
+            1000;
+        return randomWords;
     }
 
     function getMoneyOnlyOwner() public {
