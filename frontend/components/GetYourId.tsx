@@ -1,3 +1,5 @@
+//TODO: Çekiliş çekilince your id 0 lanmıyor
+
 import { useWeb3Contract } from "react-moralis"
 import { abi, contractAddresses } from "../constants"
 import { useMoralis } from "react-moralis"
@@ -6,18 +8,19 @@ import { BigNumber, ethers } from "ethers"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
 import "../styles/Home.module.css"
+import { useContractAddress } from "@/hooks/useContractAddress"
+import { useLotteryState } from "@/hooks/useLotteryState"
 
 interface contractAddressesInterface {
     [key: string]: string[]
 }
 
 function GetYourId() {
-    const addresses: contractAddressesInterface = contractAddresses
-    const { chainId: chainIdHex, isWeb3Enabled, account } = useMoralis()
-    const chainId: string = parseInt(chainIdHex!).toString()
-    const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
+    const { isWeb3Enabled, account } = useMoralis()
+    const lotteryAddress = useContractAddress()
     const [yourId, setYourId] = useState("0")
     const [buttonClicked, setButtonClicked] = useState(false)
+    const { lotteryId } = useLotteryState()
 
     const dispatch = useNotification()
 
@@ -41,8 +44,9 @@ function GetYourId() {
     }
     useEffect(() => {
         if (isWeb3Enabled) {
+            getYourIdFromContract()
         }
-    }, [isWeb3Enabled])
+    }, [isWeb3Enabled, lotteryId])
 
     useEffect(() => {
         setButtonClicked(false)
@@ -68,16 +72,22 @@ function GetYourId() {
     }
     return (
         <div className="text-white text-center">
-            
             {lotteryAddress ? (
                 <>
-                    <button className="btn-shape bg-[#7738F5] p-4 mt-2 "  onClick={handleButtonClick}>Get Your Ticket Id</button>
+                    <button
+                        className="btn-shape bg-[#7738F5] p-4 mt-2 "
+                        onClick={handleButtonClick}
+                    >
+                        Get Your Ticket Id
+                    </button>
 
                     {buttonClicked ? (
                         yourId != "undefined" ? (
                             <div> Your ticket id is {yourId}</div>
                         ) : null
-                    ) : <div> ...</div> }
+                    ) : (
+                        <div> ...</div>
+                    )}
                 </>
             ) : null}
         </div>

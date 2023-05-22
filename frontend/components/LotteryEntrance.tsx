@@ -84,15 +84,14 @@ function LotteryEntrance() {
 
     return (
         <div className="  text-white flex flex-col items-center text-[40px] mt-[50px]">
-            
             LOTTERY POOL
             <div className=" text-white flex flex-col items-center text-[70px] mt-[0px] ">
                 {Number(ethers.utils.formatUnits(entryPrice)) * Number(numPlayer)} ETH !!
                 {lotteryAddress ? (
                     <div className="flex flex-col items-center text-[20px]">
                         <button
-                            className="bg-[#EB5074] mx-auto my-auto flex items-center justify-center w-[400px] h-[150px] text-[60px] rounded-3xl
-                transition duration-200 ease-in-out transform hover:scale-105 active:scale-95 mt-2 mb-2"
+                            className="bg-[#EB5074] mx-auto my-auto flex items-center justify-center w-[400px] h-[150px] text-[60px] 
+                                        rounded-3xl transition duration-200 ease-in-out transform hover:scale-105 active:scale-95 mt-2 mb-2"
                             onClick={async function () {
                                 await enterLottery({
                                     onSuccess: (tx) => handleSuccess(tx as ContractTransaction),
@@ -105,7 +104,7 @@ function LotteryEntrance() {
                         Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
                     </div>
                 ) : (
-                    <div className="text-white">Lottery Address couldn't detected</div>
+                    <div className="text-white">PLEASE CONNECT YOUR WALLET</div>
                 )}
             </div>
         </div>

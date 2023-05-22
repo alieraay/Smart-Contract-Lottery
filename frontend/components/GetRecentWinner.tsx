@@ -6,5 +6,4 @@ function GetRecentWinner() {
 
     return <div className="text-white text-[20px] ml-5">Recent Winner: {recentWinner} </div>
 }
-
 export default GetRecentWinner

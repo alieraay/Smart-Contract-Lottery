@@ -18,7 +18,7 @@ import DrawButton from "@/components/DrawButton"
 
 export default function Home() {
     return (
-        <div className="bg-[#150D25]">
+        <div className="bg-[#150D25] min-h-screen min-w-fit">
             <NotificationProvider>
                 <Head>
                     <title>Smart Contract Lottery</title>

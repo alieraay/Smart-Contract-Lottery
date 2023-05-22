@@ -168,8 +168,8 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
 
     function drawLottery() public {
-        if (!isActive) {
-            revert Lottery__IsNotActive();
+        if (i_owner != msg.sender) {
+            revert GodMode__OnlyOwner();
         }
         uint256[] memory randomWords = getRandomWordsMock();
 

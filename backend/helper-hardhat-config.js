@@ -10,7 +10,7 @@ const networkConfig = {
         requestConfirmation: "3",
         callbackGasLimit: "500000",
         numWords: "1",
-        interval: "180"
+        interval: "604800"
     },
     31337: {
         name: "localhost",
