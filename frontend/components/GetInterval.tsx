@@ -31,7 +31,7 @@ function GetInterval() {
         getIntervalFromContract()
     }, [isWeb3Enabled])
 
-    return <div className="text-white text-right mr-14 mt-3">Lottery Time : {interval} seconds</div>
+    return <div className="text-white text-right mr-14 mt-3">Lottery Time : {interval} seconds (Deactivated)</div>
 }
 
 export default GetInterval
