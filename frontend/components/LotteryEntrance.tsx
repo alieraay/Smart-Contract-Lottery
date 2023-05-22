@@ -83,7 +83,7 @@ function LotteryEntrance() {
     }
 
     return (
-        <div className="  text-white flex flex-col items-center text-[40px] mt-[50px]">
+        <div className="  text-white flex flex-col items-center text-[40px] mt-[30px]">
             LOTTERY POOL
             <div className=" text-white flex flex-col items-center text-[70px] mt-[0px] ">
                 {Number(ethers.utils.formatUnits(entryPrice)) * Number(numPlayer)} ETH !!
@@ -101,7 +101,7 @@ function LotteryEntrance() {
                         >
                             Enter Lottery
                         </button>
-                        Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
+                        <div className="mt-4"> Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH</div>
                     </div>
                 ) : (
                     <div className="text-white">PLEASE CONNECT YOUR WALLET</div>

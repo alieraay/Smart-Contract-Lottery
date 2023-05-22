@@ -39,7 +39,6 @@ function GetYourId() {
             setYourId(yourIdFromCall)
         } else {
             setYourId("undefined")
-            handleError()
         }
     }
     useEffect(() => {
@@ -84,7 +83,7 @@ function GetYourId() {
                     {buttonClicked ? (
                         yourId != "undefined" ? (
                             <div> Your ticket id is {yourId}</div>
-                        ) : null
+                        ) : <div>...</div>
                     ) : (
                         <div> ...</div>
                     )}
