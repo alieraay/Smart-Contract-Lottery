@@ -30,7 +30,7 @@ module.exports = {
             default: 1,
         },
     },
-    defaultNetwork: "hardhat",
+    defaultNetwork: "goerli",
     networks: {
         hardhat: {
             chainId: 31337,
