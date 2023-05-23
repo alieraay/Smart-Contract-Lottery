@@ -83,9 +83,11 @@ function GetYourId() {
                     {buttonClicked ? (
                         yourId != "undefined" ? (
                             <div> Your ticket id is {yourId}</div>
-                        ) : <div>...</div>
+                        ) : (
+                            <div>...</div>
+                        )
                     ) : (
-                        <div> ...</div>
+                        <div>...</div>
                     )}
                 </>
             ) : null}
