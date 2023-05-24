@@ -22,24 +22,27 @@ export default function Home() {
                     <link rel="icon" href="../app/favicon.ico" />
                 </Head>
                 <Header />
+                <GetRecentWinner />
+
                 <div className="flex justify-between">
-                    <GodModeButton />
+                    <div className="flex items-center">
+                        <GodModeButton />
+                        <FaucetButton />
+                    </div>
+
                     <GetInterval />
                 </div>
                 <GetLotteryId />
                 <GetNumberOfPlayer />
-                <div className="flex justify-center items-center">
+                <div className=" justify-center items-center">
                     <LotteryEntrance />
+
+                    <div className="ml-4"></div>
                 </div>
 
                 <GetYourId />
 
                 <DrawButton></DrawButton>
-
-                <div className="flex justify-between ">
-                    <GetRecentWinner />
-                    <FaucetButton />
-                </div>
             </NotificationProvider>
         </div>
     )
