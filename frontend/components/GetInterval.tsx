@@ -1,5 +1,5 @@
-import { contractAddresses, abi } from "@/constants"
-import { useContractAddress } from "@/hooks/useContractAddress"
+import { abi } from "../constants"
+import { useContractAddress } from "../hooks/useContractAddress"
 import { useEffect, useState } from "react"
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import { BigNumber } from "ethers"

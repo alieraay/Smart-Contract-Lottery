@@ -1,5 +1,5 @@
 // components/GetRecentWinner.js
-import { useLotteryState } from "@/hooks/useLotteryState"
+import { useLotteryState } from "../hooks/useLotteryState"
 
 function GetRecentWinner() {
     const { lotteryId } = useLotteryState()

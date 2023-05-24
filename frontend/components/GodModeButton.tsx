@@ -1,14 +1,13 @@
 // components/GetRecentWinner.js
-import { useLotteryState } from "@/hooks/useLotteryState"
+import { useLotteryState } from "../hooks/useLotteryState"
 import { useWeb3Contract } from "react-moralis"
-import { abi, contractAddresses } from "../constants"
-import { useMoralis } from "react-moralis"
-import { useEffect, useState } from "react"
-import { BigNumber, ethers, ContractTransaction } from "ethers"
-import { error } from "console"
+import { abi } from "../constants"
+import { useState } from "react"
+import { ContractTransaction } from "ethers"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
-import { useContractAddress } from "@/hooks/useContractAddress"
+import { useContractAddress } from "../hooks/useContractAddress"
+import Image from "next/image"
 
 function FunnyImageModal({ isOpen, closeModal }: { isOpen: boolean, closeModal: () => void }) {
   return (
@@ -17,7 +16,7 @@ function FunnyImageModal({ isOpen, closeModal }: { isOpen: boolean, closeModal: 
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-black bg-opacity-50 absolute inset-0"></div>
           <div className="bg-white p-5 rounded-md funny-image-container">
-            <img src="/godMeme.webp" alt="Error Image" className="error-image" />
+            <Image src="/godMeme.webp" alt="Error Image" className="error-image" />
             <button
               className="text-white bg-red-500 px-3 py-1 rounded-md mt-3"
               onClick={closeModal}

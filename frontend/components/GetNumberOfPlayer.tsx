@@ -1,5 +1,5 @@
 // components/GetNumberOfPlayer.js
-import { useLotteryState } from "@/hooks/useLotteryState"
+import { useLotteryState } from "../hooks/useLotteryState"
 
 function GetNumberOfPlayer() {
     const { numPlayer } = useLotteryState()

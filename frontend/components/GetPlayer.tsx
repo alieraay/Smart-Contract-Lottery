@@ -1,11 +1,9 @@
 import { useWeb3Contract } from "react-moralis"
 import { abi, contractAddresses } from "../constants"
 import { useMoralis } from "react-moralis"
-import { useEffect, useState } from "react"
-import { BigNumber, ethers, ContractTransaction } from "ethers"
-import { error } from "console"
+import { useState } from "react"
+import { BigNumber } from "ethers"
 import { useNotification } from "web3uikit"
-import { handleErrorMessage } from "../utils/errorUtils"
 
 interface contractAddressesInterface {
     [key: string]: string[]
@@ -55,15 +53,6 @@ function GetPlayer() {
         getPlayerAddressesFromContract()
     }
 
-    const handleNewNotification = function () {
-        dispatch({
-            type: "info",
-            message: "Transaction Complete!",
-            title: "Tx Notification",
-            position: "topR",
-        })
-    }
-
     const handleNewErrorNotification = function (message: string) {
         dispatch({
             type: "error",
@@ -86,7 +75,6 @@ function GetPlayer() {
                     <label>
                         Enter the ticket ID:
                         <input type="text" value={ticketId} onChange={handleTicketIdInput} />
-                        
                     </label>
                 </ul>
 

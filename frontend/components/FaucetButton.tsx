@@ -1,5 +1,6 @@
-import { useLotteryState } from "@/hooks/useLotteryState"
+import { useLotteryState } from "../hooks/useLotteryState"
 import { useState } from "react"
+import Image from "next/image"
 
 function FunnyImageModal() {
     const [isOpen, setIsOpen] = useState(false)
@@ -34,7 +35,7 @@ function FunnyImageModal() {
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-black bg-opacity-50 absolute inset-0"></div>
                     <div className="bg-white p-5 rounded-md funny-image-container">
-                        <img src="/meme.jpeg" alt="Funny Image" className="funny-image" />
+                        <Image src="/meme.jpeg" alt="Funny Image" className="funny-image" />
                         <button
                             className="text-white bg-red-500 px-3 py-1 rounded-md mt-3"
                             onClick={closeModal}

@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react"
 import { useMoralis } from "react-moralis"
 import { ethers } from "ethers"
-import { useContractAddress } from "@/hooks/useContractAddress"
-import { abi } from "@/constants"
+import { useContractAddress } from "../hooks/useContractAddress"
+import { abi } from "../constants"
 import { useWeb3Contract } from "react-moralis"
 import { BigNumber } from "ethers"
 

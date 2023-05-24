@@ -1,19 +1,14 @@
 //TODO: Çekiliş çekilince your id 0 lanmıyor
 
 import { useWeb3Contract } from "react-moralis"
-import { abi, contractAddresses } from "../constants"
+import { abi } from "../constants"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
-import { BigNumber, ethers } from "ethers"
+import { BigNumber } from "ethers"
 import { useNotification } from "web3uikit"
-import { handleErrorMessage } from "../utils/errorUtils"
 import "../styles/Home.module.css"
-import { useContractAddress } from "@/hooks/useContractAddress"
-import { useLotteryState } from "@/hooks/useLotteryState"
-
-interface contractAddressesInterface {
-    [key: string]: string[]
-}
+import { useContractAddress } from "../hooks/useContractAddress"
+import { useLotteryState } from "../hooks/useLotteryState"
 
 function GetYourId() {
     const { isWeb3Enabled, account } = useMoralis()

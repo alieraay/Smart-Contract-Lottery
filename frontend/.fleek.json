@@ -1,5 +1,0 @@
-{
-    "build": {
-      "image": "fleek/next-js:latest"
-    }
-   }

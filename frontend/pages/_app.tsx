@@ -5,7 +5,8 @@ import {MoralisProvider} from "react-moralis"
 function MyApp({ Component, pageProps} : AppProps) {
     return (
         <MoralisProvider initializeOnMount={false}>
-            <Component {...pageProps} />
+            
+            <Component {...pageProps} /> 
         </MoralisProvider>
     )
 }

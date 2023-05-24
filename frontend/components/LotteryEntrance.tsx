@@ -1,17 +1,13 @@
 import { useWeb3Contract } from "react-moralis"
-import { abi, contractAddresses } from "../constants"
+import { abi } from "../constants"
 import { useMoralis } from "react-moralis"
 import { useEffect, useState } from "react"
 import { BigNumber, ethers, ContractTransaction } from "ethers"
-import { error } from "console"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
-import { useContractAddress } from "@/hooks/useContractAddress"
-import { useLotteryState } from "@/hooks/useLotteryState"
+import { useContractAddress } from "../hooks/useContractAddress"
+import { useLotteryState } from "../hooks/useLotteryState"
 
-interface contractAddressesInterface {
-    [key: string]: string[]
-}
 
 function LotteryEntrance() {
     const { isWeb3Enabled } = useMoralis()

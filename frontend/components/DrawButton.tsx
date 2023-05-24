@@ -1,21 +1,13 @@
 // components/GetRecentWinner.js
-import { useLotteryState } from "@/hooks/useLotteryState"
 import { useWeb3Contract } from "react-moralis"
-import { abi, contractAddresses } from "../constants"
+import { abi } from "../constants"
 import { useMoralis } from "react-moralis"
-import { useEffect, useState } from "react"
-import { BigNumber, ethers, ContractTransaction } from "ethers"
-import { error } from "console"
+import { ContractTransaction } from "ethers"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"
-import { useContractAddress } from "@/hooks/useContractAddress"
-
-interface contractAddressesInterface {
-    [key: string]: string[]
-}
+import { useContractAddress } from "../hooks/useContractAddress"
 
 function DrawButton() {
-    const { isWeb3Enabled } = useMoralis()
     const lotteryAddress = useContractAddress()
 
     const dispatch = useNotification()
