@@ -13,6 +13,8 @@ export function useLotteryState() {
     const [lotteryId, setLotteryId] = useState("0")
     const [recentWinner, setRecentWinner] = useState("0")
     const [numPlayer, setGetNumberOfPlayer] = useState("0")
+    const [winnerTransactionHash, setWinnerTransactionHash] = useState("")
+
 
     const { runContractFunction: getLotteryId } = useWeb3Contract({
         abi: abi,
@@ -75,10 +77,12 @@ export function useLotteryState() {
         getRecentWinnerFromContract()
         getNumPlayersFromContract()
 
-        const winnerListener = (winner: string, lotteryId: BigNumber, ticketId: BigNumber) => {
+        const winnerListener = (winner: string, lotteryId: BigNumber, ticketId: BigNumber, event: any) => {
             setLotteryId(lotteryId.toString())
             setRecentWinner(winner)
             setGetNumberOfPlayer(ticketId.toString())
+            setWinnerTransactionHash(event.transactionHash)
+
             console.log("winner fonk")
         }
 
@@ -96,5 +100,5 @@ export function useLotteryState() {
         }
     }, [isWeb3Enabled])
 
-    return { lotteryId, recentWinner, numPlayer }
+    return { lotteryId, recentWinner, numPlayer,winnerTransactionHash }
 }
