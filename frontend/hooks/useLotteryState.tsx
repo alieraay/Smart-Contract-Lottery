@@ -70,7 +70,7 @@ export function useLotteryState() {
         console.log("hi")
         if (!isWeb3Enabled) return
         console.log("içeri")
-        const provider = new ethers.providers.JsonRpcProvider("https://goerli.rpc.thirdweb.com")
+        const provider = new ethers.providers.Web3Provider(window.ethereum)
         let contract = new ethers.Contract(lotteryAddress!, abi as any, provider)
 
         getLotteryIdFromContract()
