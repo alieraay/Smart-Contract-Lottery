@@ -42,7 +42,7 @@ function FunnyImageModal() {
                             className="text-white bg-red-500 px-3 py-1 rounded-md mt-3 flex"
                             onClick={closeModal}
                         >
-                            Kapat
+                            Close
                         </button>
                     </div>
                 </div>

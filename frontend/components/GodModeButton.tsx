@@ -16,12 +16,18 @@ function FunnyImageModal({ isOpen, closeModal }: { isOpen: boolean; closeModal: 
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-black bg-opacity-50 absolute inset-0"></div>
                     <div className="bg-white p-5 rounded-md funny-image-container">
-                        <Image src="/godMeme.webp" alt="Error Image" className="error-image" width={600} height={600} />
+                        <Image
+                            src="/godMeme.webp"
+                            alt="Error Image"
+                            className="error-image"
+                            width={600}
+                            height={600}
+                        />
                         <button
                             className="text-white bg-red-500 px-3 py-1 rounded-md mt-3"
                             onClick={closeModal}
                         >
-                            Kapat
+                            Close
                         </button>
                     </div>
                 </div>
