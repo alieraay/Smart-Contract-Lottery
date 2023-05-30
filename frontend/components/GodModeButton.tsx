@@ -1,5 +1,4 @@
 // components/GetRecentWinner.js
-import { useLotteryState } from "../hooks/useLotteryState"
 import { useWeb3Contract } from "react-moralis"
 import { abi } from "../constants"
 import { useState } from "react"
