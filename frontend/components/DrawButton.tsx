@@ -1,7 +1,6 @@
 // components/GetRecentWinner.js
 import { useWeb3Contract } from "react-moralis"
 import { abi } from "../constants"
-import { useMoralis } from "react-moralis"
 import { ContractTransaction } from "ethers"
 import { useNotification } from "web3uikit"
 import { handleErrorMessage } from "../utils/errorUtils"

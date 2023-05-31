@@ -4,16 +4,10 @@ import { useMoralis } from "react-moralis"
 import { useState } from "react"
 import { BigNumber } from "ethers"
 import { useNotification } from "web3uikit"
-
-interface contractAddressesInterface {
-    [key: string]: string[]
-}
+import { useContractAddress } from "@/hooks/useContractAddress"
 
 function GetPlayer() {
-    const addresses: contractAddressesInterface = contractAddresses
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
-    const chainId: string = parseInt(chainIdHex!).toString()
-    const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
+    const lotteryAddress = useContractAddress()
 
     const [lotteryId, setLotteryId] = useState<string>("")
     const [ticketId, setTicketId] = useState<string>("")
