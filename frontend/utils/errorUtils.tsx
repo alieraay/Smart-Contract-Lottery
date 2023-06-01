@@ -1,4 +1,3 @@
-import {ethers} from "ethers"
 function handleErrorMessage(error: any, entryPrice: string ){
     let message = "";
     if (error.message.includes("EnterLottery__NotEnoughEntryPrice")) {

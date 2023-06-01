@@ -19,7 +19,10 @@ function FunnyImageModal() {
             {lotteryId ? (
                 <div className="relative ml-10 items-center">
                     <div className="text-white mb-[20px] flex">GET SOME ETH</div>
-                    <button className="btn-shape text-white bg-slate-600 p-3 ml-3 " onClick={openModal}>
+                    <button
+                        className="btn-shape text-white bg-slate-600 p-3 ml-3 "
+                        onClick={openModal}
+                    >
                         FAUCET
                     </button>
                 </div>

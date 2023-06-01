@@ -8,7 +8,6 @@ import { handleErrorMessage } from "../utils/errorUtils"
 import { useContractAddress } from "../hooks/useContractAddress"
 import { useLotteryState } from "../hooks/useLotteryState"
 
-
 function LotteryEntrance() {
     const { isWeb3Enabled } = useMoralis()
     const lotteryAddress = useContractAddress()
@@ -97,7 +96,10 @@ function LotteryEntrance() {
                         >
                             Enter Lottery
                         </button>
-                        <div className="mt-4"> Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH</div>
+                        <div className="mt-4">
+                            {" "}
+                            Entry Price is {ethers.utils.formatUnits(entryPrice)} ETH
+                        </div>
                     </div>
                 ) : (
                     <div className="text-white">PLEASE CONNECT YOUR WALLET</div>

@@ -6,7 +6,7 @@ interface contractAddressesInterface {
 }
 
 export function useContractAddress() {
-    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
+    const { chainId: chainIdHex} = useMoralis()
     const chainId: string = parseInt(chainIdHex!).toString()
     const addresses: contractAddressesInterface = contractAddresses
     const lotteryAddress = chainId in addresses ? addresses[chainId][0] : null
