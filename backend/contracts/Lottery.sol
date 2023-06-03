@@ -161,7 +161,7 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (!success) {
             revert Lottery__TransferFailed();
         }
-        ticketIdCounter = 0;
+        ticketIdCounter = 1;
         lotteryId++;
         s_lastTimeStamp = block.timestamp;
         emit WinnerSelected(recentWinner, lotteryId, ticketIdCounter);
