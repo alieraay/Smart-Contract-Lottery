@@ -95,7 +95,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
             it("reverts when checkupkeep is false", async function() {
                 await expect(lottery.performUpkeep([])).to.be.revertedWith("Lottery__UpkeepNotNeeded")
             })
-            it("updates the lottery, emits and eventi and calls the vrf coordinator", async function(){
+            it("updates the lottery, emits and event and calls the vrf coordinator", async function(){
                 await lottery.enterLottery({value: lotteryEntryPrice})
                 await network.provider.send("evm_increaseTime",[interval.toNumber() +1])
                 await network.provider.send("evm_mine", [])
